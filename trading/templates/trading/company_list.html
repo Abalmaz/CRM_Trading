@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Company</title>
+</head>
+<body>
+    <ul>
+    {% for company in companies %}
+        <li><a href="{% url 'company' company.id %}">{{ company.name }}</a></li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
