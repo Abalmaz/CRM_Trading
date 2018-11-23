@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 
 
@@ -35,10 +35,35 @@ class Company(models.Model):
     founded_date = models.DateField()
     products = models.ManyToManyField(Product, related_name='companies')
     buildings = models.ManyToManyField(Building, related_name='companies')
-    employees = models.ManyToManyField(User, related_name='companies')
+    employees = models.ManyToManyField(User,
+                                       related_name='companies',
+                                       through='EmployeeCompany')
 
     def __str__(self):
         return self.name
+
+
+class EmployeeCompany(models.Model):
+    SUPERADMIN=1
+    ADMIN = 2
+    MANAGER = 3
+    SELLER = 4
+    FINANCIER = 5
+    ROLES = (
+        (SUPERADMIN, 'superadmin'),
+        (ADMIN, 'admin'),
+        (MANAGER, 'manager'),
+        (SELLER, 'seller'),
+        (FINANCIER, 'financier'),
+    )
+
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    employee = models.ForeignKey(User, on_delete=models.CASCADE)
+    role = models.SmallIntegerField(choices=ROLES)
+    is_default_company = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = (("company", "employee"),)
 
 
 class Shop(models.Model):

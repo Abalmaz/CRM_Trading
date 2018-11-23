@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import DetailView
 from django.views.generic.list import ListView
 
@@ -14,3 +14,10 @@ class CompanyListView(ListView):
 class CompanyDetailView(DetailView):
     context_object_name = 'company'
     queryset = Company.objects.all()
+
+
+def set_session_company(request, pk):
+    request.session['company_id'] = pk
+    return redirect('home')
+
+

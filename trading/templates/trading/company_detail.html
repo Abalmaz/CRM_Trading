@@ -5,8 +5,8 @@
     <title>{{ company.name }}</title>
 </head>
 <body>
-    <p>{{ user.username }}</p>
-    <p>{{ middleware_company }}</p>
+    <p>Current company: {{ request.company }}</p>
+    {{ user }}
     <p>{{ company.name }}</p>
     <p>{{ company.country }}</p>
     <p>{{ company.founded_date }}</p>

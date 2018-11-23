@@ -5,9 +5,11 @@
     <title>Company</title>
 </head>
 <body>
+<h1>Current company: {{ company }}</h1>
     <ul>
     {% for company in companies %}
-        <li><a href="{% url 'company' company.id %}">{{ company.name }}</a></li>
+        <li>Show info: <a href="{% url 'company' company.id %}">{{ company.name }}</a></li>
+        <li>Set: <a href="{% url 'set_company' company.id %}">{{ company.name }}</a></li>
     {% endfor %}
     </ul>
 </body>
