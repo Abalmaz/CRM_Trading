@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Country, Product, Building, Company, Shop, EmployeeCompany
+from .models import Country, Product, Building, Company, Shop, EmployeeCompany,\
+                    Role
 
 
 class EmployeeCompanyInline(admin.TabularInline):
@@ -16,3 +17,4 @@ admin.site.register(Product)
 admin.site.register(Building)
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Shop)
+admin.site.register(Role)

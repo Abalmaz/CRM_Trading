@@ -1,3 +1,4 @@
 def company(request):
-    company = request.company
-    return {'company': company}
+    if request.company:
+        company = request.company
+        return {'company': company}

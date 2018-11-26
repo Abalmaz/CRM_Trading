@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'trading.middleware.SetCompanyMiddleware',
+    # 'trading.middleware.SetCompanyMiddleware',
 ]
 
 ROOT_URLCONF = 'crm_trading.urls'
@@ -64,7 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'trading.context_processors.company',
+                # 'trading.context_processors.company',
             ],
         },
     },

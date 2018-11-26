@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import User, Group
 from django.db import models
 
 
@@ -43,8 +43,8 @@ class Company(models.Model):
         return self.name
 
 
-class EmployeeCompany(models.Model):
-    SUPERADMIN=1
+class Role(models.Model):
+    SUPERADMIN = 1
     ADMIN = 2
     MANAGER = 3
     SELLER = 4
@@ -56,11 +56,20 @@ class EmployeeCompany(models.Model):
         (SELLER, 'seller'),
         (FINANCIER, 'financier'),
     )
+    id = models.PositiveSmallIntegerField(choices=ROLES, primary_key=True)
+    groups = models.ManyToManyField(Group, related_name='roles')
 
+    def __str__(self):
+        return self.get_id_display()
+
+
+class EmployeeCompany(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     employee = models.ForeignKey(User, on_delete=models.CASCADE)
-    role = models.SmallIntegerField(choices=ROLES)
     is_default_company = models.BooleanField(default=False)
+    role = models.ForeignKey(Role,
+                             related_name='employee_company',
+                             on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (("company", "employee"),)
