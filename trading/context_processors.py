@@ -1,4 +1,7 @@
 def company(request):
-    if request.company:
+    if hasattr(request, 'company'):
         company = request.company
-        return {'company': company}
+    else:
+        company = None
+    return {'company': company}
+

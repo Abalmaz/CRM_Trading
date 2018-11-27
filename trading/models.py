@@ -64,11 +64,13 @@ class Role(models.Model):
 
 
 class EmployeeCompany(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    employee = models.ForeignKey(User, on_delete=models.CASCADE)
-    is_default_company = models.BooleanField(default=False)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE,
+                                related_name='employee')
+    employee = models.ForeignKey(User, on_delete=models.CASCADE,
+                                 related_name='company')
+    is_default = models.BooleanField(default=False)
     role = models.ForeignKey(Role,
-                             related_name='employee_company',
+                             related_name='user_role_company',
                              on_delete=models.CASCADE)
 
     class Meta:
