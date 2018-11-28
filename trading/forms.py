@@ -13,4 +13,4 @@ class CompanyForm(forms.ModelForm):
 class ShopForm(forms.ModelForm):
     class Meta:
         model = Shop
-        fields = ('name', 'product', 'building')
+        fields = ('name', 'products', 'building')

@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import UpdateView, CreateView
 
 from trading.forms import CompanyForm, ShopForm
@@ -38,7 +38,7 @@ class ShopUpdateView(GroupRequiredMixin, UpdateView):
     group_required = ['superadmin', 'admin', 'manager', 'financier']
 
     model = Shop
-    fields = ['name', 'building', 'product']
+    fields = ['name', 'building', 'products']
     success_url = reverse_lazy('home')
 
 
