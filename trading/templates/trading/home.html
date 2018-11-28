@@ -1,0 +1,21 @@
+{% extends 'trading/base.html' %}
+{% block content %}
+<h1>{{ company.name }}</h1>
+<p>Address: {{ company.country }}</p>
+<p>Founded at: {{ company.founded_date }}</p>
+<ul>Products:
+    {% for product in company.products.all %}
+        <li>{{ product.name }}</li>
+    {% endfor %}
+</ul>
+<ul>Buildings:
+    {% for building in company.buildings.all %}
+    <li><strong>{{ building.name }}</strong>, {{ building.country }}, {{ building.address }}</li>
+    {% endfor %}
+</ul>
+<ul>Shops:
+    {% for shop in company.shops.all %}
+    <li><strong>{{ shop.name }}</strong> <small> ( {{ shop.building }} )</small></li>
+    {% endfor %}
+</ul>
+{% endblock %}
