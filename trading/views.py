@@ -38,8 +38,19 @@ class ShopUpdateView(GroupRequiredMixin, UpdateView):
     group_required = ['superadmin', 'admin', 'manager', 'financier']
 
     model = Shop
-    fields = ['name', 'building', 'products']
+    form_class = ShopForm
     success_url = reverse_lazy('home')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'company': self.request.company})
+        return kwargs
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.company = self.request.company
+        obj.save()
+        return super().form_valid(form)
 
 
 class ShopCreateView(GroupRequiredMixin, CreateView):
@@ -50,6 +61,17 @@ class ShopCreateView(GroupRequiredMixin, CreateView):
     model = Shop
     form_class = ShopForm
     template_name = 'trading/new_shop.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'company': self.request.company})
+        return kwargs
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.company = self.request.company
+        obj.save()
+        return super().form_valid(form)
 
 
 def set_session_company(request, pk):

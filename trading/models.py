@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group, AbstractUser
 from django.db import models
 
 
@@ -14,6 +14,11 @@ class Country(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class User(AbstractUser):
+    def get_user_role(self, company):
+        return self.company.filter(company=company).first().role
 
 
 class Building(models.Model):

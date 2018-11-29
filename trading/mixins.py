@@ -9,8 +9,8 @@ class GroupRequiredMixin(object):
             raise PermissionDenied
         else:
             user_groups = []
-            for group in request.user.company.filter(company=request.company).\
-                    first().role.groups.values_list('name', flat=True):
+            for group in request.user.get_user_role(request.company).\
+                    groups.values_list('name', flat=True):
                 user_groups.append(group)
             if len(set(user_groups).intersection(self.group_required)) <= 0:
                 raise PermissionDenied

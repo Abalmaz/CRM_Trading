@@ -20,7 +20,7 @@
             {% for product in company.products.all %}
                 <li>{{ product.name }}</li>
             {% endfor %}
-</ul>
+      </ul>
   </div>
   <div class="tab-pane fade" id="nav-building" role="tabpanel" aria-labelledby="nav-building-tab">
       <br>
@@ -36,13 +36,26 @@
       <h1>Shops:</h1>
       <ul>
            {% for shop in company.shops.all %}
-                <li><strong>{{ shop.name }}</strong> <small> ( {{ shop.building }} )</small></li>
+                <li><strong>{{ shop.name }}</strong> <small> ( {{ shop.building }} )</small> <a href="{% url 'shop_update' pk=shop.pk  %}">Update</a></li>
            {% endfor %}
       </ul>
+       <a href="{% url 'new_shop' %}">New Shop</a>
   </div>
   <div class="tab-pane fade" id="nav-employee" role="tabpanel" aria-labelledby="nav-employee-tab">
       <br>
       <h1>Emploees</h1>
+      <ul>
+          {% for employee in company.employees.all %}
+            <li>{{ employee.username }} (
+                <small>{% for r in employee.company.all %}
+                        {% if r.company == company %}
+                            {{ r.role }}
+                        {% endif %}
+                    {% endfor %}
+                </small> )
+            </li>
+          {% endfor %}
+      </ul>
   </div>
 </div>
 <br>
