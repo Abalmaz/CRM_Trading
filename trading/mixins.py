@@ -8,10 +8,7 @@ class GroupRequiredMixin(object):
         if not request.user.is_authenticated:
             raise PermissionDenied
         else:
-            user_groups = []
-            for group in request.user.get_user_role(request.company).\
-                    groups.values_list('name', flat=True):
-                user_groups.append(group)
+            user_groups = request.user.get_current_groups(request.company)
             if len(set(user_groups).intersection(self.group_required)) <= 0:
                 raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)

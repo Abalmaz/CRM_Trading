@@ -17,8 +17,22 @@ class Country(models.Model):
 
 
 class User(AbstractUser):
-    def get_user_role(self, company):
+    def get_current_role(self, company):
         return self.company.filter(company=company).first().role
+
+    def get_current_groups(self, company):
+        user_group = []
+        for group in self.get_current_role(company).groups.values_list(
+                'name', flat=True):
+            user_group.append(group)
+        return user_group
+
+    def get_current_permissions(self, company):
+        user_perm = []
+        for group in self.get_current_role(company).groups.all():
+            for perm in group.permissions.all():
+                user_perm.append(perm.codename)
+        return user_perm
 
 
 class Building(models.Model):

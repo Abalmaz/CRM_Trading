@@ -1,4 +1,5 @@
 {% extends 'trading/base.html' %}
+{% load has_permission %}
 {% block content %}
 
 <br>
@@ -36,10 +37,19 @@
       <h1>Shops:</h1>
       <ul>
            {% for shop in company.shops.all %}
-                <li><strong>{{ shop.name }}</strong> <small> ( {{ shop.building }} )</small> <a href="{% url 'shop_update' pk=shop.pk  %}">Update</a></li>
+                <li><strong>{{ shop.name }}</strong> <small> ( {{ shop.building }} )</small>
+                    {% has_perm 'change_shop' as has_perms %}
+                    {% if has_perms %}
+                         <a href="{% url 'shop_update' pk=shop.pk  %}">Update</a>
+                    {% endif %}
+
+                </li>
            {% endfor %}
       </ul>
-       <a href="{% url 'new_shop' %}">New Shop</a>
+      {% has_perm 'add_shop' as has_perms %}
+            {% if has_perms %}
+                  <a href="{% url 'new_shop' %}">New Shop</a>
+            {% endif %}
   </div>
   <div class="tab-pane fade" id="nav-employee" role="tabpanel" aria-labelledby="nav-employee-tab">
       <br>

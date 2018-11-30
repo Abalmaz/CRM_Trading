@@ -13,7 +13,7 @@ class CompanyForm(forms.ModelForm):
 class ShopForm(forms.ModelForm):
     class Meta:
         model = Shop
-        fields = ('name', 'products', 'building')
+        fields = ('name', 'products', 'building', 'company')
 
     def __init__(self, company, *args, **kwargs):
         super().__init__(*args, **kwargs)

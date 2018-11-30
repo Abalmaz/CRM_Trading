@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView
+from django.views import View
+from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView, CreateView
 
 from trading.forms import CompanyForm, ShopForm
@@ -9,9 +10,18 @@ from trading.mixins import GroupRequiredMixin
 from trading.models import Company, Shop
 
 
-@login_required(login_url='login')
-def home(request):
-    return render(request=request, template_name='trading/home.html')
+# @login_required(login_url='login')
+# def home(request):
+#     return render(request=request, template_name=)
+
+class HomeView(TemplateView):
+    template_name = 'trading/home.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data()
+        ctx['current_role'] = self.request.user.get_current_role(self.request.company)
+        print(ctx['current_role'])
+        return ctx
 
 
 class CompanyUpdateView(GroupRequiredMixin, UpdateView):
