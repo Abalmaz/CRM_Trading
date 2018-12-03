@@ -1,7 +1,6 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views import View
 from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView, CreateView
 
@@ -10,16 +9,14 @@ from trading.mixins import GroupRequiredMixin
 from trading.models import Company, Shop
 
 
-# @login_required(login_url='login')
-# def home(request):
-#     return render(request=request, template_name=)
-
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
+    login_url = 'login'
     template_name = 'trading/home.html'
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data()
-        ctx['current_role'] = self.request.user.get_current_role(self.request.company)
+        ctx['current_role'] = self.request.user.get_current_role(
+            self.request.company)
         print(ctx['current_role'])
         return ctx
 
@@ -51,17 +48,6 @@ class ShopUpdateView(GroupRequiredMixin, UpdateView):
     form_class = ShopForm
     success_url = reverse_lazy('home')
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({'company': self.request.company})
-        return kwargs
-
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.company = self.request.company
-        obj.save()
-        return super().form_valid(form)
-
 
 class ShopCreateView(GroupRequiredMixin, CreateView):
 
@@ -71,17 +57,6 @@ class ShopCreateView(GroupRequiredMixin, CreateView):
     model = Shop
     form_class = ShopForm
     template_name = 'trading/new_shop.html'
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({'company': self.request.company})
-        return kwargs
-
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.company = self.request.company
-        obj.save()
-        return super().form_valid(form)
 
 
 def set_session_company(request, pk):

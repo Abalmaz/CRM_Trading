@@ -7,7 +7,6 @@
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <a class="nav-item nav-link active" id="nav-company-tab" data-toggle="tab" href="#nav-company" role="tab" aria-controls="nav-company" aria-selected="true">Company</a>
     <a class="nav-item nav-link" id="nav-building-tab" data-toggle="tab" href="#nav-building" role="tab" aria-controls="nav-building" aria-selected="false">Buildings</a>
-    <a class="nav-item nav-link" id="nav-shop-tab" data-toggle="tab" href="#nav-shop" role="tab" aria-controls="nav-shop" aria-selected="false">Shops</a>
     <a class="nav-item nav-link" id="nav-employee-tab" data-toggle="tab" href="#nav-employee" role="tab" aria-controls="nav-employee" aria-selected="false">Employees</a>
   </div>
 </nav>
@@ -17,11 +16,6 @@
       <h1>{{ company.name }}</h1>
       <p>Address: {{ company.country }}</p>
       <p>Founded at: {{ company.founded_date }}</p>
-      <ul>Products:
-            {% for product in company.products.all %}
-                <li>{{ product.name }}</li>
-            {% endfor %}
-      </ul>
   </div>
   <div class="tab-pane fade" id="nav-building" role="tabpanel" aria-labelledby="nav-building-tab">
       <br>
@@ -29,27 +23,13 @@
       <ul>
             {% for building in company.buildings.all %}
                 <li><strong>{{ building.name }}</strong>, {{ building.country }}, {{ building.address }}</li>
+                <ol>
+                {% for shop in building.shops.all %}
+                    <li>{{ shop.name }}</li>
+                {% endfor %}
+                </ol>
             {% endfor %}
       </ul>
-  </div>
-  <div class="tab-pane fade" id="nav-shop" role="tabpanel" aria-labelledby="nav-shop-tab">
-      <br>
-      <h1>Shops:</h1>
-      <ul>
-           {% for shop in company.shops.all %}
-                <li><strong>{{ shop.name }}</strong> <small> ( {{ shop.building }} )</small>
-                    {% has_perm 'change_shop' as has_perms %}
-                    {% if has_perms %}
-                         <a href="{% url 'shop_update' pk=shop.pk  %}">Update</a>
-                    {% endif %}
-
-                </li>
-           {% endfor %}
-      </ul>
-      {% has_perm 'add_shop' as has_perms %}
-            {% if has_perms %}
-                  <a href="{% url 'new_shop' %}">New Shop</a>
-            {% endif %}
   </div>
   <div class="tab-pane fade" id="nav-employee" role="tabpanel" aria-labelledby="nav-employee-tab">
       <br>

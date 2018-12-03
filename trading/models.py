@@ -21,17 +21,13 @@ class User(AbstractUser):
         return self.company.filter(company=company).first().role
 
     def get_current_groups(self, company):
-        user_group = []
-        for group in self.get_current_role(company).groups.values_list(
-                'name', flat=True):
-            user_group.append(group)
-        return user_group
+        return self.get_current_role(company).groups.values_list(
+            'name', flat=True)
 
     def get_current_permissions(self, company):
         user_perm = []
         for group in self.get_current_role(company).groups.all():
-            for perm in group.permissions.all():
-                user_perm.append(perm.codename)
+            user_perm = group.permissions.values_list('codename', flat=True)
         return user_perm
 
 
@@ -52,7 +48,6 @@ class Company(models.Model):
                                 on_delete=models.PROTECT,
                                 related_name='companies')
     founded_date = models.DateField()
-    products = models.ManyToManyField(Product, related_name='companies')
     buildings = models.ManyToManyField(Building, related_name='companies')
     employees = models.ManyToManyField(User,
                                        related_name='companies',
@@ -98,9 +93,7 @@ class EmployeeCompany(models.Model):
 
 class Shop(models.Model):
     name = models.CharField(max_length=80)
-    company = models.ForeignKey(Company,
-                                on_delete=models.CASCADE,
-                                related_name='shops')
+
     products = models.ManyToManyField(Product, related_name='shops')
     building = models.ForeignKey(Building,
                                  on_delete=models.CASCADE,
